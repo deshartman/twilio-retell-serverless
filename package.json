@@ -20,6 +20,7 @@
     "twilio": "^3.56"
   },
   "devDependencies": {
+    "@types/node": "^20.12.7",
     "copyfiles": "^2.2.0",
     "twilio-run": "^3.5.4",
     "typescript": "^5.3.3"
