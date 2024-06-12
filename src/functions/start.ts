@@ -46,7 +46,11 @@ export const handler: ServerlessFunctionSignature<MyContext, MyEvent> =
           sample_rate: 8000,
           from_number: event.From,
           to_number: event.To,
-          metadata: { twilio_call_sid: event.CallSid },
+          metadata: {
+            twilio_call_sid: event.CallSid,
+            from_number: event.From,
+            to_number: event.To,
+          },
         });
       if (callResponse) {
         // Start phone call websocket
@@ -63,7 +67,7 @@ export const handler: ServerlessFunctionSignature<MyContext, MyEvent> =
         callback(null, response);
       }
     } catch (err) {
-      console.log("Error connecting to Retel;", err);
+      console.error("Error connecting to Retell", err);
       const response = new VoiceResponse();
       response.say("An application exception occurred.");
       callback(null, response);
