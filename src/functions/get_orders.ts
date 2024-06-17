@@ -70,9 +70,10 @@ export const handler: ServerlessFunctionSignature<MyContext, MyEvent> =
       const segmentPayload = await result.json();
 
       console.log('#################')
-      console.log(JSON.stringify(segmentPayload.data, null, 2));
+      // console.log(JSON.stringify(segmentPayload.data, null, 2));
       console.log('#################')
-      // console.log(`Segment events fetched: ${JSON.stringify(segmentPayload.data[0], null, 2)}`);
+      console.log(`Segment events fetched: ${JSON.stringify(segmentPayload.data, null, 2)}`);
+      console.log('#################')
 
       // Guard clause
       // console.log(`!segmentPayload = ${!segmentPayload}`)
