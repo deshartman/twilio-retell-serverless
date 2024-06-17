@@ -49,7 +49,7 @@ export const handler: ServerlessFunctionSignature<MyContext, MyEvent> =
         "utf8"
       ).toString("base64");
 
-      const userId = event.call.metadata.from_number;
+      const userId = encodeURIComponent(event.call.metadata.from_number);
 
       const startsWithClient = /^client:/i.test(
         event.call.metadata.from_number
