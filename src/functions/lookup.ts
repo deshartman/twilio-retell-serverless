@@ -67,9 +67,11 @@ export const handler: ServerlessFunctionSignature<MyContext, MyEvent> =
       };
 
       const result = await fetch(url, options);
+
+      console.log(`Have fetch result`);
       const segmentPayload = await result.json();
 
-      console.log(JSON.stringify(segmentPayload, null, 2));
+      console.log(`Profile`, JSON.stringify(segmentPayload, null, 2));
 
       // Guard clause
       if (!segmentPayload || !segmentPayload.hasOwnProperty("traits")) {
@@ -78,7 +80,10 @@ export const handler: ServerlessFunctionSignature<MyContext, MyEvent> =
         return;
       }
 
+      console.log(`Setting body`);
+      response.appendHeader("Content-Type", "application/json");
       response.setBody(segmentPayload.traits);
+      // response.setBody(JSON.stringify(segmentPayload.traits));
 
       return callback(null, response);
     } catch (err: any) {
