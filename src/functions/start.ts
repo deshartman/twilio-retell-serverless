@@ -53,11 +53,31 @@ export const handler: ServerlessFunctionSignature<MyContext, MyEvent> =
           },
         });
       if (callResponse) {
+        // Set up call recording to the call
+        // Get a reference to the Twilio REST helper library
+        const twilioClient = context.getTwilioClient();
+
+        // Start recording the call
+        // try {
+        //   await twilioClient.calls(event.CallSid).recordings
+        //     .create({
+        //       recordingChannels: "dual",
+        //       recordingStatusCallback: `https://${context.DOMAIN_NAME}/recording-status`,
+        //     });
+        // } catch (error) {
+        //   console.error("An error occurred while starting the call recording", error);
+        //   return callback(`An error occurred while starting the call recording ${error}`);
+        // }
+
         // Start phone call websocket
         const response = new VoiceResponse();
         const start = response.connect();
         const stream = start.stream({
           url: `wss://api.retellai.com/audio-websocket/${callResponse.call_id}`,
+        });
+
+        response.record({
+          playBeep: false,
         });
 
         callback(null, response);

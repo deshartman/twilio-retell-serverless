@@ -16,7 +16,7 @@ type MyEvent = {
     event_name: string;
     summary: string;
     total: string;
-    timestamp: string;
+    // timestamp: string;
   };
   call: {
     metadata: {
@@ -77,8 +77,9 @@ export const handler: ServerlessFunctionSignature<MyContext, MyEvent> =
       if (event.args.summary)
         botEvent.properties["summary"] = event.args.summary;
       if (event.args.total) botEvent.properties["total"] = event.args.total;
-      if (event.args.timestamp)
-        botEvent.properties["timestamp"] = event.args.timestamp;
+      // Add the current timestamp to this event
+      botEvent.properties["timestamp"] = new Date().toISOString();
+
 
       var eventRequestOptions = {
         method: "POST",

@@ -56,8 +56,12 @@ export const handler: ServerlessFunctionSignature<MyContext, MyEvent> =
       );
       const lookup_type = startsWithClient ? "client_id" : "phone";
 
-      const url = `${context.SEGMENT_PROFILES_API_BASE_URL}/spaces/${context.SEGMENT_SPACE_ID}/collections/users/profiles/${lookup_type}:${userId}/events?limit=5`;
-      // console.log(`Fetching segment events from: ${url}`);
+      /**
+       *  Get all the events with the following conditions:
+       * - only place_order events
+       * - only the last order placed which is the first item in the returned array by default.
+       */
+      const url = `${context.SEGMENT_PROFILES_API_BASE_URL}/spaces/${context.SEGMENT_SPACE_ID}/collections/users/profiles/${lookup_type}:${userId}/events?include=place_order&limit=1`;
 
       var options = {
         method: "GET",
@@ -70,22 +74,18 @@ export const handler: ServerlessFunctionSignature<MyContext, MyEvent> =
       const segmentPayload = await result.json();
 
       console.log('#################')
-      // console.log(JSON.stringify(segmentPayload.data, null, 2));
-      console.log('#################')
-      console.log(`Segment events fetched: ${JSON.stringify(segmentPayload.data, null, 2)}`);
+      console.log(JSON.stringify(segmentPayload, null, 2));
       console.log('#################')
 
       // Guard clause
-      // console.log(`!segmentPayload = ${!segmentPayload}`)
-      // console.log(`!segmentPayload.hasOwnProperty("events") = ${!segmentPayload.hasOwnProperty("events")}`)
-      if (!segmentPayload) { //} || !segmentPayload.hasOwnProperty("events")) {
+      if (!segmentPayload) {
         console.log(`No events found for user: ${userId}`);
         response.setBody([]);
         callback(null, response);
         return;
       }
 
-      response.setBody(segmentPayload.data[0]['properties']);
+      response.setBody(segmentPayload);
 
       return callback(null, response);
     } catch (err: any) {
